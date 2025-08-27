@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Math - Complete Guide</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 3em;
+            font-weight: 300;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin: 10px 0 0 0;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .tab-container {
+            background: white;
+            margin: 30px auto;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+            max-width: 1400px;
+        }
+        
+        .tabs {
+            display: flex;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-bottom: 1px solid #dee2e6;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .tabs::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .tab {
+            padding: 20px 30px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-bottom: 4px solid transparent;
+            white-space: nowrap;
+            color: #6c757d;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tab::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.5s;
+        }
+        
+        .tab:hover::before {
+            left: 100%;
+        }
+        
+        .tab:hover {
+            background: rgba(255,255,255,0.8);
+            color: #495057;
+            transform: translateY(-2px);
+        }
+        
+        .tab.active {
+            background: white;
+            border-bottom-color: #3498db;
+            color: #3498db;
+            font-weight: 600;
+            box-shadow: 0 -4px 20px rgba(52, 152, 219, 0.1);
+        }
+        
+        .tab-content {
+            display: none;
+            padding: 40px;
+            min-height: 700px;
+            background: white;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: slideIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+        
+        .tab-content h2 {
+            color: #2c3e50;
+            font-size: 2.5em;
+            font-weight: 300;
+            margin: 0 0 20px 0;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #ecf0f1;
+            position: relative;
+        }
+        
+        .tab-content h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #9b59b6);
+        }
+        
+        .tab-content p {
+            font-size: 1.1em;
+            color: #5a6c7d;
+            margin-bottom: 30px;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-left: 5px solid #3498db;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+        
+        .formula-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.12);
+        }
+        
+        .formula-box h3 {
+            color: #2c3e50;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin: 0 0 20px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .formula-box h3::before {
+            content: '📐';
+            margin-right: 10px;
+            font-size: 1.2em;
+        }
+        
+        .formula {
+            font-family: 'Courier New', 'Monaco', monospace;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .formula::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .formula-box ul {
+            padding-left: 25px;
+        }
+        
+        .formula-box li {
+            margin: 12px 0;
+            color: #5a6c7d;
+            font-size: 1.05em;
+        }
+        
+        .calculator {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border: 2px solid #e9ecef;
+            border-radius: 20px;
+            padding: 35px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .calculator:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+        
+        .calculator h3 {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin: 0 0 25px 0;
+            text-align: center;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+        }
+        
+        .calculator input {
+            width: 100%;
+            padding: 15px 20px;
+            margin: 12px 0;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+        
+        .calculator input:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .calculator button {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin: 20px 10px 10px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .calculator button:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1f5f8b 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .calculator button:active {
+            transform: translateY(-1px);
+        }
+        
+        .result {
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+            color: #155724;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-weight: 600;
+            text-align: center;
+            font-size: 1.1em;
+            border: 2px solid #c3e6cb;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: fadeInUp 0.5s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        canvas {
+            border: 3px solid #34495e;
+            background: white;
+            margin: 30px 0;
+            max-width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        
+        .step-box {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 15px;
+            border: 2px solid #e8f4fd;
+            display: none;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+        }
+        
+        .step-box.active {
+            display: block;
+            animation: slideInLeft 0.5s ease;
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        .step-box h4 {
+            color: #2c3e50;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin: 0 0 15px 0;
+        }
+        
+        .controls {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .step-btn {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            margin: 8px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .step-btn:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1f5f8b 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .step-btn.active {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+        
+        .concept-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 2px solid #ffc107;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .concept-box::before {
+            content: '🧸';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2em;
+            opacity: 0.3;
+        }
+        
+        .concept-box h4 {
+            color: #856404;
+            margin-top: 0;
+            font-size: 1.3em;
+            font-weight: 600;
+            border-bottom: 2px solid #ffc107;
+            padding-bottom: 10px;
+        }
+        
+        .concept-box ul {
+            padding-left: 25px;
+        }
+        
+        .concept-box li {
+            margin: 15px 0;
+            color: #856404;
+            font-size: 1.05em;
+            line-height: 1.7;
+        }
+        
+        .concept-box strong {
+            color: #5a4a00;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .tabs {
+                flex-direction: column;
+            }
+            
+            .tab {
+                padding: 15px 20px;
+                text-align: center;
+            }
+            
+            .tab-content {
+                padding: 20px;
+            }
+            
+            .formula-box, .calculator {
+                padding: 20px;
+            }
+            
+            .formula {
+                font-size: 1em;
+                padding: 20px;
+            }
+        }
+        
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📊 Financial Math Complete Guide</h1>
+        <p>Master all the essential formulas and concepts with interactive examples</p>
+    </div>
+    
+    <div class="container">
+        <div class="tab-container">
+            <div class="tabs">
+                <button class="tab active" onclick="showTab('fisher')">🏭 Fisher's Theorem</button>
+                <button class="tab" onclick="showTab('calculators')">🧮 All Calculators</button>
+                <button class="tab" onclick="showTab('theory')">📚 Theory & Concepts</button>
+                <button class="tab" onclick="showTab('cheatsheet')">📋 Complete Formula Sheet</button>
+            </div>
+            
+            <!-- Tab 1: Fisher's Separation Theorem -->
+            <div id="fisher" class="tab-content active">
+                <h2>🏭 Fisher's Separation Theorem</h2>
+                <p>Learn how business investment decisions are separate from personal spending preferences.</p>
+                
+                <div class="controls">
+                    <button onclick="showStep(1)" class="step-btn" data-step="1">1. Production Frontier</button>
+                    <button onclick="showStep(2)" class="step-btn" data-step="2">2. Optimal Point</button>
+                    <button onclick="showStep(3)" class="step-btn" data-step="3">3. Capital Market Line</button>
+                    <button onclick="showStep(4)" class="step-btn" data-step="4">4. Investor Preferences</button>
+                </div>
+                
+                <canvas id="fisherCanvas" width="800" height="500"></canvas>
+                
+                <div id="step1" class="step-box">
+                    <h4>Step 1: Production Frontier</h4>
+                    <p>The curved line shows all possible ways to run your business - trade-off between money today vs. tomorrow.</p>
+                </div>
+                
+                <div id="step2" class="step-box">
+                    <h4>Step 2: Optimal Investment Point</h4>
+                    <p>Point P is where you should invest to maximize business value.</p>
+                </div>
+                
+                <div id="step3" class="step-box">
+                    <h4>Step 3: Capital Market Line</h4>
+                    <p>The straight line shows how you can trade money between today and tomorrow using financial markets.</p>
+                </div>
+                
+                <div id="step4" class="step-box">
+                    <h4>Step 4: Investor Preferences</h4>
+                    <p>Different investors choose different points along the curve based on their personal preferences.</p>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>🧸 Super Simple Explanation (Like You're 7!)</h4>
+                    <p><strong>Think of it like a lemonade stand:</strong></p>
+                    <ul>
+                        <li>You have $10 to start your lemonade business</li>
+                        <li>You can spend ALL $10 today (buy lots of lemonade now)</li>
+                        <li>OR you can save some money for tomorrow (buy some today, some tomorrow)</li>
+                        <li>The curved line shows ALL the different ways you can split your money</li>
+                        <li><strong>It's like a menu of all your options!</strong></li>
+                    </ul>
+                    
+                    <p><strong>🏭 Production Frontier - What is it?</strong></p>
+                    <ul>
+                        <li>Like a menu showing all your business options</li>
+                        <li>Spend money today, save for tomorrow, or any mix</li>
+                        <li>The curve shows the trade-off: more today = less tomorrow</li>
+                    </ul>
+                    
+                    <p><strong>💰 Capital Market Line - What is it?</strong></p>
+                    <ul>
+                        <li>Like a bank that lets you trade money between today and tomorrow</li>
+                        <li>Want more money today? The bank can lend you money</li>
+                        <li>Want more money tomorrow? You can save money in the bank</li>
+                    </ul>
+                    
+                    <p><strong>😊 Investor Preferences - What is it?</strong></p>
+                    <ul>
+                        <li>Different people like different things</li>
+                        <li>Some want to spend money NOW (like buying toys today)</li>
+                        <li>Some want to save money for LATER (like saving for a big toy)</li>
+                        <li>Some are happy with a mix of both</li>
+                    </ul>
+                    
+                    <p><strong>🎯 The Big Idea:</strong></p>
+                    <ul>
+                        <li>1. <strong>Business Decision:</strong> Run your lemonade stand at point P (highest value)</li>
+                        <li>2. <strong>Personal Decision:</strong> Choose your preferred point ALONG the curve</li>
+                        <li>3. <strong>Banking Decision:</strong> Use the bank to fine-tune your money timing</li>
+                        <li>4. <strong>These are completely separate decisions!</strong></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Tab 2: All Calculators -->
+            <div id="calculators" class="tab-content">
+                <h2>🧮 All Calculators</h2>
+                <p>Interactive calculators for all financial math formulas. Practice with real numbers!</p>
+                
+                <div class="calculator">
+                    <h3>⏰ Time Value of Money - PV Calculator</h3>
+                    <input type="number" id="fv" placeholder="Future Value ($)" step="0.01">
+                    <input type="number" id="rate" placeholder="Interest Rate (%)" step="0.01">
+                    <input type="number" id="periods" placeholder="Number of Periods">
+                    <button onclick="calculatePV()">Calculate PV</button>
+                    <div id="pvResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>⏰ Time Value of Money - FV Calculator</h3>
+                    <input type="number" id="pv" placeholder="Present Value ($)" step="0.01">
+                    <input type="number" id="rate2" placeholder="Interest Rate (%)" step="0.01">
+                    <input type="number" id="periods2" placeholder="Number of Periods">
+                    <button onclick="calculateFV()">Calculate FV</button>
+                    <div id="fvResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>💰 NPV Calculator</h3>
+                    <input type="number" id="initialInv" placeholder="Initial Investment ($)" step="0.01">
+                    <input type="number" id="discountRate" placeholder="Discount Rate (%)" step="0.01">
+                    <input type="number" id="cf1" placeholder="Cash Flow Year 1 ($)" step="0.01">
+                    <input type="number" id="cf2" placeholder="Cash Flow Year 2 ($)" step="0.01">
+                    <input type="number" id="cf3" placeholder="Cash Flow Year 3 ($)" step="0.01">
+                    <button onclick="calculateNPV()">Calculate NPV</button>
+                    <div id="npvResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>📜 Bond Price Calculator</h3>
+                    <input type="number" id="coupon" placeholder="Annual Coupon Payment ($)" step="0.01">
+                    <input type="number" id="faceValue" placeholder="Face Value ($)" step="0.01">
+                    <input type="number" id="yield" placeholder="Yield to Maturity (%)" step="0.01">
+                    <input type="number" id="years" placeholder="Years to Maturity">
+                    <button onclick="calculateBondPrice()">Calculate Bond Price</button>
+                    <div id="bondResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>📈 Stock Price Calculator (DDM)</h3>
+                    <input type="number" id="dividend" placeholder="Expected Dividend Next Year ($)" step="0.01">
+                    <input type="number" id="requiredReturn" placeholder="Required Rate of Return (%)" step="0.01">
+                    <input type="number" id="growthRate" placeholder="Expected Growth Rate (%)" step="0.01">
+                    <button onclick="calculateStockPrice()">Calculate Stock Price</button>
+                    <div id="stockResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>🎯 CAPM Calculator</h3>
+                    <input type="number" id="riskFree" placeholder="Risk-Free Rate (%)" step="0.01">
+                    <input type="number" id="beta" placeholder="Beta" step="0.01">
+                    <input type="number" id="marketReturn" placeholder="Expected Market Return (%)" step="0.01">
+                    <button onclick="calculateCAPM()">Calculate Expected Return</button>
+                    <div id="capmResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>🎯 WACC Calculator</h3>
+                    <input type="number" id="equityValue" placeholder="Market Value of Equity ($)" step="0.01">
+                    <input type="number" id="debtValue" placeholder="Market Value of Debt ($)" step="0.01">
+                    <input type="number" id="costEquity" placeholder="Cost of Equity (%)" step="0.01">
+                    <input type="number" id="costDebt" placeholder="Cost of Debt (%)" step="0.01">
+                    <input type="number" id="taxRate" placeholder="Tax Rate (%)" step="0.01">
+                    <button onclick="calculateWACC()">Calculate WACC</button>
+                    <div id="waccResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>⚡ Option Payoff Calculator</h3>
+                    <select id="optionType">
+                        <option value="call">Call Option</option>
+                        <option value="put">Put Option</option>
+                    </select>
+                    <input type="number" id="strikePrice" placeholder="Strike Price ($)" step="0.01">
+                    <input type="number" id="currentPrice" placeholder="Current Stock Price ($)" step="0.01">
+                    <button onclick="calculateOptionPayoff()">Calculate Payoff</button>
+                    <div id="optionResult" class="result" style="display: none;"></div>
+                </div>
+                
+                <div class="calculator">
+                    <h3>⚠️ Risk-Return Calculator</h3>
+                    <p>Enter possible returns and their probabilities:</p>
+                    <input type="number" id="ret1" placeholder="Return 1 (%)" step="0.01">
+                    <input type="number" id="prob1" placeholder="Probability 1 (0-1)" step="0.01">
+                    <input type="number" id="ret2" placeholder="Return 2 (%)" step="0.01">
+                    <input type="number" id="prob2" placeholder="Probability 2 (0-1)" step="0.01">
+                    <input type="number" id="ret3" placeholder="Return 3 (%)" step="0.01">
+                    <input type="number" id="prob3" placeholder="Probability 3 (0-1)" step="0.01">
+                    <button onclick="calculateRiskReturn()">Calculate</button>
+                    <div id="riskResult" class="result" style="display: none;"></div>
+                </div>
+            </div>
+            
+            <!-- Tab 3: Theory & Concepts -->
+            <div id="theory" class="tab-content">
+                <h2>📚 Theory & Concepts</h2>
+                <p>Learn the fundamental concepts and theories behind financial math.</p>
+                
+                <div class="concept-box">
+                    <h4>⏰ Time Value of Money - The Magic Money Tree</h4>
+                    <p><strong>Think of it like a magic money tree:</strong></p>
+                    <ul>
+                        <li>If you plant $1 today, it grows into more money tomorrow</li>
+                        <li>This is called "compound interest" - money making more money</li>
+                        <li>So $1 today is worth MORE than $1 tomorrow</li>
+                        <li><strong>It's like a magic tree that grows money!</strong></li>
+                    </ul>
+                    
+                    <p><strong>📐 Understanding Slopes and Steepness:</strong></p>
+                    <ul>
+                        <li><strong>Steep slope:</strong> Like a steep hill - you give up A LOT of tomorrow's money to get a little more today</li>
+                        <li><strong>Gentle slope:</strong> Like a gentle hill - you give up a little tomorrow's money to get more today</li>
+                        <li><strong>In our diagram:</strong> The slope shows how much "tomorrow money" you give up to get "today money"</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>💰 NPV & IRR - The Toy Buying Decision</h4>
+                    <p><strong>Think of it like buying a toy:</strong></p>
+                    <ul>
+                        <li>You spend $10 today to buy a toy</li>
+                        <li>The toy makes you happy for many days</li>
+                        <li>Is the happiness worth more than $10? That's what NPV tells you!</li>
+                        <li><strong>NPV = How much extra happiness you get (in money terms)</strong></li>
+                    </ul>
+                    
+                    <p><strong>🔢 The F, X, I, D Concept - The Money Equation:</strong></p>
+                    <ul>
+                        <li><strong>F (Financing):</strong> New money you borrow or get from investors</li>
+                        <li><strong>X (Cash from Operations):</strong> Money your business makes from selling lemonade</li>
+                        <li><strong>I (Investment):</strong> Money you spend on new equipment, more lemons, etc.</li>
+                        <li><strong>D (Dividends):</strong> Money you give to shareholders</li>
+                        <li><strong>The Equation:</strong> F + X = I + D (Money In = Money Out)</li>
+                        <li><strong>Key Point:</strong> If you change one, you must change another!</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>📜 Bonds & Fixed Income - Lending to Friends</h4>
+                    <p><strong>Think of it like lending money to a friend:</strong></p>
+                    <ul>
+                        <li>You give your friend $100 today</li>
+                        <li>Your friend promises to pay you back $100 plus $5 interest next year</li>
+                        <li>The $100 is the "face value" (principal)</li>
+                        <li>The $5 is the "coupon" (interest payment)</li>
+                        <li>If your friend is risky, you want more interest to compensate for the risk</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>📈 Stocks & Equity - Owning a Piece of Business</h4>
+                    <p><strong>Think of it like owning part of a lemonade stand:</strong></p>
+                    <ul>
+                        <li>When you buy a stock, you own a tiny piece of a company</li>
+                        <li>If the company makes money, you might get some (dividends)</li>
+                        <li>If the company grows, your piece becomes worth more</li>
+                        <li>But if the company struggles, your piece becomes worth less</li>
+                        <li><strong>Stocks are like owning a piece of a business!</strong></li>
+                    </ul>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>🎯 CAPM & WACC - Pricing Risky Adventures</h4>
+                    <p><strong>Think of it like pricing a risky adventure:</strong></p>
+                    <ul>
+                        <li><strong>CAPM:</strong> Like figuring out how much extra money you need to go on a risky trip</li>
+                        <li><strong>WACC:</strong> Like calculating the average cost of all the different ways you can pay for something</li>
+                        <li>Riskier investments need higher returns to make them worth it</li>
+                        <li>It's like getting paid extra to do something dangerous!</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>⚡ Options & Derivatives - Insurance and Bets</h4>
+                    <p><strong>Think of it like buying insurance or making bets:</strong></p>
+                    <ul>
+                        <li><strong>Call Option:</strong> Like buying the right to buy something later at a fixed price</li>
+                        <li><strong>Put Option:</strong> Like buying insurance - you get paid if something goes wrong</li>
+                        <li><strong>Options are like having choices without obligations</strong></li>
+                        <li>You can choose to use them or not, depending on what happens</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>⚠️ Risk & Return - Choosing Your Game</h4>
+                    <p><strong>Think of it like choosing a game:</strong></p>
+                    <ul>
+                        <li><strong>Safe game:</strong> Like playing catch - you probably won't get hurt, but it's not very exciting</li>
+                        <li><strong>Risky game:</strong> Like climbing a tree - you might fall and get hurt, but it's very exciting</li>
+                        <li><strong>Expected Return:</strong> How much fun you expect to have on average</li>
+                        <li><strong>Risk:</strong> How much the fun can vary (sometimes super fun, sometimes not fun at all)</li>
+                    </ul>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>📊 Portfolio Theory - Packing Your Lunchbox</h4>
+                    <p><strong>Think of it like packing a lunchbox:</strong></p>
+                    <ul>
+                        <li><strong>Don't put all eggs in one basket:</strong> If you only pack apples and the apples go bad, you have no lunch!</li>
+                        <li><strong>Pack different things:</strong> Apples, sandwiches, cookies - if one goes bad, you still have others</li>
+                        <li><strong>Some things go together:</strong> If it rains, both your umbrella and raincoat get wet (high correlation)</li>
+                        <li><strong>Some things are different:</strong> If it rains, your umbrella gets wet but your cookies stay dry (low correlation)</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Fisher's Separation Theorem - Complete Guide</h4>
+                    <ul>
+                        <li><strong>What it is:</strong> Shows that investment decisions are separate from financing decisions in perfect markets</li>
+                        <li><strong>🧸 Simple Analogy:</strong> Think of it like choosing what to cook (investment) vs. how to pay for ingredients (financing) - they're separate decisions!</li>
+                        <li><strong>U (Utility):</strong> How happy/satisfied an investor is with different combinations of consumption</li>
+                        <li><strong>🧸 Simple Analogy:</strong> Utility is like a happiness score - higher U means more happiness!</li>
+                        <li><strong>Slopes and Steepness:</strong> 
+                            <ul>
+                                <li><strong>Steep slope:</strong> High opportunity cost (giving up a lot of future consumption for current consumption)</li>
+                                <li><strong>Flat slope:</strong> Low opportunity cost (not giving up much future consumption for current consumption)</li>
+                                <li><strong>🧸 Simple Analogy:</strong> Steep slope = expensive trade-off, Flat slope = cheap trade-off!</li>
+                            </ul>
+                        </li>
+                        <li><strong>F, X, I, D Concept:</strong>
+                            <ul>
+                                <li><strong>F (Financing):</strong> How you get money (borrow, sell assets, etc.)</li>
+                                <li><strong>X (Exchange):</strong> Trading current for future consumption</li>
+                                <li><strong>I (Investment):</strong> What you do with the money (buy equipment, expand business, etc.)</li>
+                                <li><strong>D (Dividend):</strong> Money paid to shareholders</li>
+                                <li><strong>🧸 Simple Analogy:</strong> F = getting money, X = trading time, I = using money, D = sharing profits!</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Coupons & Bond Features</h4>
+                    <ul>
+                        <li><strong>Coupon Rate:</strong> The annual interest rate paid by the bond issuer</li>
+                        <li><strong>Coupon Payment:</strong> Regular interest payments (usually semi-annually)</li>
+                        <li><strong>Face Value (Par Value):</strong> The amount repaid at maturity</li>
+                        <li><strong>Maturity Date:</strong> When the bond principal is repaid</li>
+                        <li><strong>Yield to Maturity (YTM):</strong> Total return if held to maturity</li>
+                        <li><strong>Current Yield:</strong> Annual coupon payment ÷ Current market price</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Annuities Explained</h4>
+                    <ul>
+                        <li><strong>Ordinary Annuity:</strong> Payments made at the END of each period</li>
+                        <li><strong>Annuity Due:</strong> Payments made at the BEGINNING of each period</li>
+                        <li><strong>Fixed Annuity:</strong> Guaranteed payments for a set period</li>
+                        <li><strong>Variable Annuity:</strong> Payments that vary based on investment performance</li>
+                        <li><strong>Deferred Annuity:</strong> Payments start at a future date</li>
+                        <li><strong>Immediate Annuity:</strong> Payments start right away</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Bond Pricing & Valuation</h4>
+                    <ul>
+                        <li><strong>Bond Price:</strong> Present value of all future cash flows</li>
+                        <li><strong>Premium Bond:</strong> Price > Face value (coupon rate > market rate)</li>
+                        <li><strong>Discount Bond:</strong> Price < Face value (coupon rate < market rate)</li>
+                        <li><strong>Par Bond:</strong> Price = Face value (coupon rate = market rate)</li>
+                        <li><strong>Duration:</strong> Measure of bond price sensitivity to interest rate changes</li>
+                        <li><strong>Convexity:</strong> Measures the curvature of price-yield relationship</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Stock Valuation Methods</h4>
+                    <ul>
+                        <li><strong>Dividend Discount Model (DDM):</strong> Values stock based on future dividends</li>
+                        <li><strong>Gordon Growth Model:</strong> For stocks with constant dividend growth</li>
+                        <li><strong>Price-to-Earnings (P/E):</strong> Stock price ÷ Earnings per share</li>
+                        <li><strong>Price-to-Book (P/B):</strong> Stock price ÷ Book value per share</li>
+                        <li><strong>Discounted Cash Flow (DCF):</strong> Based on future free cash flows</li>
+                        <li><strong>Asset-Based Valuation:</strong> Based on company's net asset value</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Options & Derivatives</h4>
+                    <ul>
+                        <li><strong>Call Option:</strong> Right to BUY at a specific price</li>
+                        <li><strong>Put Option:</strong> Right to SELL at a specific price</li>
+                        <li><strong>Strike Price:</strong> The price at which option can be exercised</li>
+                        <li><strong>Expiration Date:</strong> When the option expires</li>
+                        <li><strong>In-the-Money:</strong> Option has intrinsic value</li>
+                        <li><strong>Out-of-the-Money:</strong> Option has no intrinsic value</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Risk Management</h4>
+                    <ul>
+                        <li><strong>Systematic Risk:</strong> Market-wide risk that affects all investments</li>
+                        <li><strong>Unsystematic Risk:</strong> Company-specific risk that can be diversified away</li>
+                        <li><strong>Beta:</strong> Measure of systematic risk relative to the market</li>
+                        <li><strong>Value at Risk (VaR):</strong> Maximum expected loss over a time period</li>
+                        <li><strong>Sharpe Ratio:</strong> Risk-adjusted return measure</li>
+                        <li><strong>Hedging:</strong> Using derivatives to reduce risk exposure</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Portfolio Management</h4>
+                    <ul>
+                        <li><strong>Diversification:</strong> Spreading investments across different assets</li>
+                        <li><strong>Asset Allocation:</strong> Dividing portfolio among different asset classes</li>
+                        <li><strong>Rebalancing:</strong> Adjusting portfolio weights back to target allocation</li>
+                        <li><strong>Efficient Frontier:</strong> Optimal risk-return combinations</li>
+                        <li><strong>Capital Market Line:</strong> Risk-free rate to efficient portfolio line</li>
+                        <li><strong>Modern Portfolio Theory:</strong> Maximizing return for given risk level</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Corporate Finance</h4>
+                    <ul>
+                        <li><strong>Weighted Average Cost of Capital (WACC):</strong> Average cost of financing</li>
+                        <li><strong>Capital Structure:</strong> Mix of debt and equity financing</li>
+                        <li><strong>Leverage:</strong> Using debt to increase potential returns</li>
+                        <li><strong>Dividend Policy:</strong> How much to pay shareholders vs. reinvest</li>
+                        <li><strong>Working Capital:</strong> Current assets minus current liabilities</li>
+                        <li><strong>Cash Flow Management:</strong> Managing cash inflows and outflows</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>International Finance</h4>
+                    <ul>
+                        <li><strong>Exchange Rates:</strong> Value of one currency in terms of another</li>
+                        <li><strong>Currency Risk:</strong> Risk from exchange rate fluctuations</li>
+                        <li><strong>Interest Rate Parity:</strong> Relationship between interest rates and exchange rates</li>
+                        <li><strong>Purchasing Power Parity:</strong> Exchange rates adjust for price differences</li>
+                        <li><strong>Political Risk:</strong> Risk from political changes in foreign countries</li>
+                        <li><strong>Country Risk:</strong> Overall risk of investing in a specific country</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Financial Ratios & Analysis</h4>
+                    <ul>
+                        <li><strong>Liquidity Ratios:</strong> Ability to meet short-term obligations</li>
+                        <li><strong>Profitability Ratios:</strong> Company's ability to generate profits</li>
+                        <li><strong>Efficiency Ratios:</strong> How well company uses its assets</li>
+                        <li><strong>Leverage Ratios:</strong> Company's debt levels and financial risk</li>
+                        <li><strong>Market Ratios:</strong> Stock price relative to company fundamentals</li>
+                        <li><strong>Growth Ratios:</strong> Company's growth rate and potential</li>
+                    </ul>
+                </div>
+
+                <div class="concept-box">
+                    <h4>Real Estate Finance</h4>
+                    <ul>
+                        <li><strong>Mortgage Types:</strong> Fixed-rate, adjustable-rate, interest-only</li>
+                        <li><strong>Amortization:</strong> Gradual repayment of loan principal</li>
+                        <li><strong>Down Payment:</strong> Initial payment when buying property</li>
+                        <li><strong>Closing Costs:</strong> Additional fees when completing purchase</li>
+                        <li><strong>Property Tax:</strong> Annual tax on property value</li>
+                        <li><strong>Homeowners Insurance:</strong> Protection against property damage</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Tab 4: Formula Cheat Sheet -->
+            <div id="cheatsheet" class="tab-content">
+                <h2>📚 Formula Cheat Sheet</h2>
+                <p>All the important formulas in one place for quick reference!</p>
+                
+                <div class="formula-box">
+                    <h3>⏰ Time Value of Money</h3>
+                    <div class="formula">PV = FV / (1 + r)^n</div>
+                    <div class="formula">FV = PV × (1 + r)^n</div>
+                    <p><strong>🧸 Remember:</strong> Money today is worth more than money tomorrow!</p>
+                </div>
+                
+                <div class="formula-box">
+                    <h3>💰 Investment Decisions</h3>
+                    <div class="formula">NPV = Σ [CFt / (1 + r)^t] - Initial Investment</div>
+                    <div class="formula">IRR: NPV = 0 when r = IRR</div>
+                    <p><strong>🧸 Remember:</strong> Accept if NPV > 0, Accept if IRR > Required Rate</p>
+                </div>
+                
+                <div class="formula-box">
+                    <h3>⚠️ Risk & Return</h3>
+                    <div class="formula">Expected Return: E(R) = Σ (Pi × Ri)</div>
+                    <div class="formula">Risk: σ = √[Σ Pi × (Ri - E(R))²]</div>
+                    <p><strong>🧸 Remember:</strong> Higher risk usually means higher potential return!</p>
+                </div>
+                
+                <div class="formula-box">
+                    <h3>📈 Portfolio Theory</h3>
+                    <div class="formula">Portfolio Return: E(Rp) = Σ (wi × E(Ri))</div>
+                    <div class="formula">Portfolio Risk: σp = √[w₁²σ₁² + w₂²σ₂² + 2w₁w₂σ₁σ₂ρ₁₂]</div>
+                    <p><strong>🧸 Remember:</strong> Don't put all eggs in one basket!</p>
+                </div>
+                
+                <div class="formula-box">
+                    <h3>🔢 The Money Equation (F, X, I, D)</h3>
+                    <div class="formula">F + X = I + D</div>
+                    <p><strong>Where:</strong></p>
+                    <ul>
+                        <li>F = Financing (new money raised)</li>
+                        <li>X = Cash from Operations (profit)</li>
+                        <li>I = Investment (spending on growth)</li>
+                        <li>D = Dividends (money to shareholders)</li>
+                    </ul>
+                    <p><strong>🧸 Remember:</strong> Money in must equal money out!</p>
+                </div>
+                
+                <div class="concept-box">
+                    <h4>🎯 Quick Decision Rules</h4>
+                    <ul>
+                        <li><strong>NPV:</strong> Accept if > 0, Reject if < 0</li>
+                        <li><strong>IRR:</strong> Accept if > Required Rate, Reject if < Required Rate</li>
+                        <li><strong>Payback:</strong> Accept if payback period < target period</li>
+                        <li><strong>Risk:</strong> Higher risk usually means higher return</li>
+                        <li><strong>Diversification:</strong> More different assets = lower risk</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab switching
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+        
+        // Fisher's Theorem functions
+        function showStep(step) {
+            const stepBoxes = document.querySelectorAll('.step-box');
+            stepBoxes.forEach(box => box.classList.remove('active'));
+            
+            if (step >= 1) document.getElementById('step1').classList.add('active');
+            if (step >= 2) document.getElementById('step2').classList.add('active');
+            if (step >= 3) document.getElementById('step3').classList.add('active');
+            if (step >= 4) document.getElementById('step4').classList.add('active');
+            
+            drawFisherDiagram(step);
+        }
+        
+        function drawFisherDiagram(step) {
+            const canvas = document.getElementById('fisherCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            drawGrid(ctx);
+            
+            // Draw axes
+            drawAxes(ctx);
+            
+            if (step >= 1) drawProductionFrontier(ctx);
+            if (step >= 2) drawOptimalPoint(ctx);
+            if (step >= 3) drawCapitalMarketLine(ctx);
+            if (step >= 4) drawInvestorPreferences(ctx);
+        }
+        
+        function drawGrid(ctx) {
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            
+            for (let x = 100; x < 700; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, 450);
+                ctx.stroke();
+            }
+            
+            for (let y = 50; y < 450; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(100, y);
+                ctx.lineTo(700, y);
+                ctx.stroke();
+            }
+        }
+        
+        function drawAxes(ctx) {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 3;
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#333';
+            
+            // Y-axis
+            ctx.beginPath();
+            ctx.moveTo(100, 50);
+            ctx.lineTo(100, 450);
+            ctx.stroke();
+            
+            // X-axis
+            ctx.beginPath();
+            ctx.moveTo(100, 450);
+            ctx.lineTo(700, 450);
+            ctx.stroke();
+            
+            ctx.fillText('P2 (Period 2)', 20, 80);
+            ctx.fillText('P1 (Period 1)', 650, 480);
+        }
+        
+        function drawProductionFrontier(ctx) {
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            
+            for (let x = 100; x <= 700; x++) {
+                const progress = (x - 100) / 600;
+                const y = 450 - 350 * Math.pow(progress, 0.4);
+                if (x === 100) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+            
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('🏭 Production Frontier', 300, 120);
+        }
+        
+        function drawOptimalPoint(ctx) {
+            const px = 400;
+            const py = 450 - 350 * Math.pow(0.5, 0.4);
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(px, py, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('P', px + 25, py - 25);
+            ctx.font = '16px Arial';
+            ctx.fillText('🎯 Optimal Investment Point', px + 35, py + 40);
+        }
+        
+        function drawCapitalMarketLine(ctx) {
+            const px = 400;
+            const py = 450 - 350 * Math.pow(0.5, 0.4);
+            
+            const slope = -0.4 * 350 * Math.pow(0.5, -0.6) / 600;
+            const intercept = py - slope * px;
+            
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([8, 4]);
+            
+            ctx.beginPath();
+            ctx.moveTo(100, intercept + slope * 100);
+            ctx.lineTo(700, intercept + slope * 700);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+            ctx.fillText('💰 Capital Market Line', 500, 180);
+        }
+        
+        function drawInvestorPreferences(ctx) {
+            ctx.strokeStyle = '#27ae60';
+            ctx.lineWidth = 2;
+            
+            const ax = 500, ay = 450 - 350 * Math.pow(0.67, 0.4);
+            const bx = 200, by = 450 - 350 * Math.pow(0.17, 0.4);
+            const cx = 400, cy = 450 - 350 * Math.pow(0.5, 0.4);
+            
+            ctx.beginPath();
+            ctx.arc(ax, ay, 25, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(bx, by, 25, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.arc(cx, cy, 25, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(ax, ay, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.arc(bx, by, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.font = '14px Arial';
+            ctx.fillText('A', ax + 20, ay - 20);
+            ctx.fillText('B', bx - 30, by + 25);
+            ctx.fillText('C', cx + 20, cy - 20);
+        }
+        
+        // Calculator functions
+        function calculatePV() {
+            const fv = parseFloat(document.getElementById('fv').value);
+            const rate = parseFloat(document.getElementById('rate').value) / 100;
+            const periods = parseFloat(document.getElementById('periods').value);
+            
+            if (isNaN(fv) || isNaN(rate) || isNaN(periods)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            const pv = fv / Math.pow(1 + rate, periods);
+            document.getElementById('pvResult').textContent = `Present Value: $${pv.toFixed(2)}`;
+            document.getElementById('pvResult').style.display = 'block';
+        }
+        
+        function calculateFV() {
+            const pv = parseFloat(document.getElementById('pv').value);
+            const rate = parseFloat(document.getElementById('rate2').value) / 100;
+            const periods = parseFloat(document.getElementById('periods2').value);
+            
+            if (isNaN(pv) || isNaN(rate) || isNaN(periods)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            const fv = pv * Math.pow(1 + rate, periods);
+            document.getElementById('fvResult').textContent = `Future Value: $${fv.toFixed(2)}`;
+            document.getElementById('fvResult').style.display = 'block';
+        }
+        
+        function calculateNPV() {
+            const initialInv = parseFloat(document.getElementById('initialInv').value);
+            const discountRate = parseFloat(document.getElementById('discountRate').value) / 100;
+            const cf1 = parseFloat(document.getElementById('cf1').value) || 0;
+            const cf2 = parseFloat(document.getElementById('cf2').value) || 0;
+            const cf3 = parseFloat(document.getElementById('cf3').value) || 0;
+            
+            if (isNaN(initialInv) || isNaN(discountRate)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            const npv = (cf1 / Math.pow(1 + discountRate, 1)) + 
+                       (cf2 / Math.pow(1 + discountRate, 2)) + 
+                       (cf3 / Math.pow(1 + discountRate, 3)) - initialInv;
+            
+            const decision = npv > 0 ? 'ACCEPT' : 'REJECT';
+            document.getElementById('npvResult').innerHTML = `NPV: $${npv.toFixed(2)}<br>Decision: ${decision}`;
+            document.getElementById('npvResult').style.display = 'block';
+        }
+        
+        function calculateRiskReturn() {
+            const ret1 = parseFloat(document.getElementById('ret1').value);
+            const prob1 = parseFloat(document.getElementById('prob1').value);
+            const ret2 = parseFloat(document.getElementById('ret2').value);
+            const prob2 = parseFloat(document.getElementById('prob2').value);
+            const ret3 = parseFloat(document.getElementById('ret3').value);
+            const prob3 = parseFloat(document.getElementById('prob3').value);
+            
+            if (isNaN(ret1) || isNaN(prob1) || isNaN(ret2) || isNaN(prob2) || isNaN(ret3) || isNaN(prob3)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            const expectedReturn = (ret1 * prob1) + (ret2 * prob2) + (ret3 * prob3);
+            const variance = (prob1 * Math.pow(ret1 - expectedReturn, 2)) + 
+                           (prob2 * Math.pow(ret2 - expectedReturn, 2)) + 
+                           (prob3 * Math.pow(ret3 - expectedReturn, 2));
+            const stdDev = Math.sqrt(variance);
+            
+            document.getElementById('riskResult').innerHTML = `Expected Return: ${expectedReturn.toFixed(2)}%<br>Standard Deviation: ${stdDev.toFixed(2)}%`;
+            document.getElementById('riskResult').style.display = 'block';
+        }
+        
+        // Initialize
+        drawFisherDiagram(0);
+        
+        // Additional calculator functions
+        function calculateBondPrice() {
+            const coupon = parseFloat(document.getElementById('coupon').value);
+            const faceValue = parseFloat(document.getElementById('faceValue').value);
+            const yield = parseFloat(document.getElementById('yield').value) / 100;
+            const years = parseFloat(document.getElementById('years').value);
+            
+            if (isNaN(coupon) || isNaN(faceValue) || isNaN(yield) || isNaN(years)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            // Bond price formula: C × [1 - (1 + r)^-n] / r + F / (1 + r)^n
+            const couponPV = coupon * (1 - Math.pow(1 + yield, -years)) / yield;
+            const faceValuePV = faceValue / Math.pow(1 + yield, years);
+            const bondPrice = couponPV + faceValuePV;
+            
+            document.getElementById('bondResult').textContent = `Bond Price: $${bondPrice.toFixed(2)}`;
+            document.getElementById('bondResult').style.display = 'block';
+        }
+        
+        function calculateStockPrice() {
+            const dividend = parseFloat(document.getElementById('dividend').value);
+            const requiredReturn = parseFloat(document.getElementById('requiredReturn').value) / 100;
+            const growthRate = parseFloat(document.getElementById('growthRate').value) / 100;
+            
+            if (isNaN(dividend) || isNaN(requiredReturn) || isNaN(growthRate)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            if (growthRate >= requiredReturn) {
+                alert('Growth rate must be less than required return for this model to work');
+                return;
+            }
+            
+            // DDM formula: Stock Price = D1 / (r - g)
+            const stockPrice = dividend / (requiredReturn - growthRate);
+            
+            document.getElementById('stockResult').textContent = `Stock Price: $${stockPrice.toFixed(2)}`;
+            document.getElementById('stockResult').style.display = 'block';
+        }
+        
+        function calculateCAPM() {
+            const riskFree = parseFloat(document.getElementById('riskFree').value) / 100;
+            const beta = parseFloat(document.getElementById('beta').value);
+            const marketReturn = parseFloat(document.getElementById('marketReturn').value) / 100;
+            
+            if (isNaN(riskFree) || isNaN(beta) || isNaN(marketReturn)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            // CAPM formula: E(Ri) = Rf + βi × [E(Rm) - Rf]
+            const expectedReturn = riskFree + beta * (marketReturn - riskFree);
+            
+            document.getElementById('capmResult').textContent = `Expected Return: ${(expectedReturn * 100).toFixed(2)}%`;
+            document.getElementById('capmResult').style.display = 'block';
+        }
+        
+        function calculateWACC() {
+            const equityValue = parseFloat(document.getElementById('equityValue').value);
+            const debtValue = parseFloat(document.getElementById('debtValue').value);
+            const costEquity = parseFloat(document.getElementById('costEquity').value) / 100;
+            const costDebt = parseFloat(document.getElementById('costDebt').value) / 100;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) / 100;
+            
+            if (isNaN(equityValue) || isNaN(debtValue) || isNaN(costEquity) || isNaN(costDebt) || isNaN(taxRate)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            const totalValue = equityValue + debtValue;
+            const equityWeight = equityValue / totalValue;
+            const debtWeight = debtValue / totalValue;
+            
+            // WACC formula: (E/V) × Re + (D/V) × Rd × (1 - T)
+            const wacc = (equityWeight * costEquity) + (debtWeight * costDebt * (1 - taxRate));
+            
+            document.getElementById('waccResult').textContent = `WACC: ${(wacc * 100).toFixed(2)}%`;
+            document.getElementById('waccResult').style.display = 'block';
+        }
+        
+        function calculateOptionPayoff() {
+            const optionType = document.getElementById('optionType').value;
+            const strikePrice = parseFloat(document.getElementById('strikePrice').value);
+            const currentPrice = parseFloat(document.getElementById('currentPrice').value);
+            
+            if (isNaN(strikePrice) || isNaN(currentPrice)) {
+                alert('Please enter valid numbers');
+                return;
+            }
+            
+            let payoff;
+            if (optionType === 'call') {
+                // Call payoff: Max(0, Stock Price - Strike Price)
+                payoff = Math.max(0, currentPrice - strikePrice);
+            } else {
+                // Put payoff: Max(0, Strike Price - Stock Price)
+                payoff = Math.max(0, strikePrice - currentPrice);
+            }
+            
+            const status = payoff > 0 ? 'In-the-Money' : 'Out-of-the-Money';
+            document.getElementById('optionResult').innerHTML = `Option Payoff: $${payoff.toFixed(2)}<br>Status: ${status}`;
+            document.getElementById('optionResult').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
