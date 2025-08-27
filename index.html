@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fisher's Separation Theorem - SUPER SIMPLE!</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: #f5f5f5;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+        }
+        
+        .explanation {
+            background: #e8f4fd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #3498db;
+        }
+        
+        .simple-concepts {
+            background: #ffeaa7;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #fdcb6e;
+        }
+        
+        .simple-concepts h3 {
+            color: #2d3436;
+            margin-top: 0;
+        }
+        
+        .concept-box {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #ffeaa7;
+        }
+        
+        .concept-box h4 {
+            color: #e17055;
+            margin-top: 0;
+        }
+        
+        .diagram-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        
+        canvas {
+            border: 2px solid #333;
+            background: white;
+            margin: 20px 0;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        button:hover {
+            background: #2980b9;
+        }
+        
+        button.active {
+            background: #e74c3c;
+        }
+        
+        .step-box {
+            background: white;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+            border: 2px solid #e8f4fd;
+            display: none;
+        }
+        
+        .step-box.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .key-points {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+        }
+        
+        .key-points h3 {
+            color: #856404;
+            margin-top: 0;
+        }
+        
+        .quiz-section {
+            background: #d1ecf1;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 5px solid #17a2b8;
+        }
+        
+        .quiz-section h3 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        
+        .quiz-option {
+            background: #f8f9fa;
+            padding: 10px 15px;
+            margin: 8px 0;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: #e9ecef;
+        }
+        
+        .quiz-option.correct {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .feedback.incorrect {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .question-number {
+            background: #6f42c1;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+        
+        .emoji {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Fisher's Separation Theorem - SUPER SIMPLE!</h1>
+        
+        <div class="explanation">
+            <h2>🎯 What This Diagram Shows</h2>
+            <p>This is the <strong>standard Fisher's Separation Theorem diagram</strong> you see in lectures - a production frontier that starts from the Y-axis (Period 2) and curves down to the right, with a capital market line tangent at the optimal investment point.</p>
+        </div>
+        
+        <div class="simple-concepts">
+            <h3>🧸 Super Simple Explanations (Like You're 7!)</h3>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">🏭</span>Production Frontier - What is it?</h4>
+                <p><strong>Think of it like a lemonade stand:</strong></p>
+                <ul>
+                    <li>You have $10 to start your lemonade business</li>
+                    <li>You can spend ALL $10 today (buy lots of lemonade now)</li>
+                    <li>OR you can save some money for tomorrow (buy some today, some tomorrow)</li>
+                    <li>The curved line shows ALL the different ways you can split your money</li>
+                    <li><strong>It's like a menu of all your options!</strong></li>
+                </ul>
+            </div>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">💰</span>Capital Market Line - What is it?</h4>
+                <p><strong>Think of it like a bank:</strong></p>
+                <ul>
+                    <li>After you decide how to run your lemonade stand, you can use the bank</li>
+                    <li>Want more money today? The bank can lend you money (you pay it back tomorrow)</li>
+                    <li>Want more money tomorrow? You can save money in the bank (earn interest)</li>
+                    <li>The straight line shows ALL the ways you can trade money between today and tomorrow</li>
+                    <li><strong>It's like a money exchange service!</strong></li>
+                </ul>
+            </div>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">😊</span>Utility - What is it?</h4>
+                <p><strong>Think of it like happiness:</strong></p>
+                <ul>
+                    <li>Different people like different things</li>
+                    <li>Some people want to spend money NOW (like buying toys today)</li>
+                    <li>Some people want to save money for LATER (like saving for a big toy)</li>
+                    <li>Some people are happy with a mix of both</li>
+                    <li><strong>Utility = How happy you are with your choice!</strong></li>
+                </ul>
+            </div>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">📐</span>Slopes and Steepness - What do they mean?</h4>
+                <p><strong>Think of it like a hill:</strong></p>
+                <ul>
+                    <li><strong>Steep slope:</strong> Like a steep hill - you give up a LOT of tomorrow's money to get a little more today</li>
+                    <li><strong>Gentle slope:</strong> Like a gentle hill - you give up a little tomorrow's money to get more today</li>
+                    <li><strong>Production Frontier slope:</strong> Shows how much tomorrow's money you lose when you invest more today</li>
+                    <li><strong>Capital Market Line slope:</strong> Shows the bank's interest rate (how much you gain/lose using the bank)</li>
+                    <li><strong>Indifference curve slope:</strong> Shows how much you personally value today vs. tomorrow</li>
+                </ul>
+            </div>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">🔢</span>F, X, I, D Concept - The Money Equation</h4>
+                <p><strong>Think of it like a money balance sheet:</strong></p>
+                <ul>
+                    <li><strong>F (Financing):</strong> New money you borrow or get from investors</li>
+                    <li><strong>X (Cash from Operations):</strong> Money your business makes from selling lemonade</li>
+                    <li><strong>I (Investment):</strong> Money you spend on new equipment, more lemons, etc.</li>
+                    <li><strong>D (Dividends):</strong> Money you give to shareholders</li>
+                    <li><strong>The Equation:</strong> F + X = I + D (Money In = Money Out)</li>
+                    <li><strong>Key Point:</strong> If you change one, you must change another!</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="diagram-section">
+            <h3>📊 The Super Simple Diagram</h3>
+            <p>Now let's see these concepts in action!</p>
+            
+            <div class="controls">
+                <button onclick="showStep(1)" class="step-btn" data-step="1">1. 🏭 Production Frontier</button>
+                <button onclick="showStep(2)" class="step-btn" data-step="2">2. 🎯 Optimal Point P</button>
+                <button onclick="showStep(3)" class="step-btn" data-step="3">3. 💰 Capital Market Line</button>
+                <button onclick="showStep(4)" class="step-btn" data-step="4">4. 😊 Investor Preferences</button>
+                <button onclick="showStep(5)" class="step-btn" data-step="5">5. 🎉 The Separation!</button>
+            </div>
+            
+            <canvas id="lectureCanvas" width="800" height="500"></canvas>
+            
+            <div id="step1" class="step-box">
+                <h4>Step 1: 🏭 Production Frontier (Your Lemonade Stand Options)</h4>
+                <p>The curved line shows all possible ways you can run your business:</p>
+                <ul>
+                    <li><strong>Point E:</strong> No investment - keep all money for tomorrow</li>
+                    <li><strong>Curve:</strong> Shows trade-off between money today vs. money tomorrow</li>
+                    <li><strong>Shape:</strong> Curved because the more you invest today, the less extra money you get tomorrow</li>
+                </ul>
+            </div>
+            
+            <div id="step2" class="step-box">
+                <h4>Step 2: 🎯 Optimal Investment Point (P)</h4>
+                <p>Point P is where you should invest because:</p>
+                <ul>
+                    <li>It's on the production frontier (you can actually do this)</li>
+                    <li>It gives you the highest total value for your business</li>
+                    <li>This decision is based ONLY on making your business most valuable</li>
+                </ul>
+            </div>
+            
+            <div id="step3" class="step-box">
+                <h4>Step 3: 💰 Capital Market Line (Your Bank Options)</h4>
+                <p>The straight line shows how you can adjust your spending timing:</p>
+                <ul>
+                    <li><strong>Tangent at P:</strong> Shows the bank's interest rate</li>
+                    <li><strong>Above P:</strong> Can get more money tomorrow (save in bank)</li>
+                    <li><strong>Below P:</strong> Can get more money today (borrow from bank)</li>
+                </ul>
+            </div>
+            
+            <div id="step4" class="step-box">
+                <h4>Step 4: 😊 Investor Preferences (What Makes People Happy)</h4>
+                <p>Different people have different preferences:</p>
+                <ul>
+                    <li><strong>Investor A:</strong> Wants more money today (spend now, like buying toys)</li>
+                    <li><strong>Investor B:</strong> Wants more money tomorrow (save for later, like saving for big toy)</li>
+                    <li><strong>Investor C:</strong> Happy with the mix at point P</li>
+                    <li><strong>Key Point:</strong> Investors choose different points ALONG the production frontier curve based on their preferences!</li>
+                </ul>
+            </div>
+            
+            <div id="step5" class="step-box">
+                <h4>Step 5: 🎉 The Separation!</h4>
+                <p><strong>🎉 THE BIG IDEA:</strong></p>
+                <p>1. <strong>Business Decision:</strong> Run your lemonade stand at point P (highest value)</p>
+                <p>2. <strong>Personal Decision:</strong> Choose your preferred point ALONG the production frontier curve</p>
+                <p>3. <strong>Banking Decision:</strong> Use the capital market line to fine-tune your money timing</p>
+                <p>4. <strong>These are completely separate decisions!</strong></p>
+            </div>
+        </div>
+        
+        <div class="key-points">
+            <h3>🔑 Key Points (Super Simple)</h3>
+            <ul>
+                <li><strong>🏭 Production Frontier:</strong> All the ways you can run your business (today vs. tomorrow)</li>
+                <li><strong>Point E:</strong> No investment - all money for tomorrow</li>
+                <li><strong>Point P:</strong> Best way to run your business - highest value</li>
+                <li><strong>💰 Capital Market Line:</strong> How you can trade money between today and tomorrow</li>
+                <li><strong>😊 Investor Preferences:</strong> What makes different people happy</li>
+            </ul>
+        </div>
+        
+        <div class="simple-concepts">
+            <h3>📚 Detailed Explanations</h3>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">📐</span>Understanding Slopes and Steepness</h4>
+                <p><strong>What is a slope?</strong> A slope tells you how steep something is. Think of it like a hill:</p>
+                <ul>
+                    <li><strong>Steep slope (like 45° hill):</strong> You climb a lot vertically for a little horizontal movement</li>
+                    <li><strong>Gentle slope (like 10° hill):</strong> You climb a little vertically for a lot of horizontal movement</li>
+                    <li><strong>In our diagram:</strong> The slope shows how much "tomorrow money" you give up to get "today money"</li>
+                </ul>
+                
+                <p><strong>Production Frontier Slope:</strong></p>
+                <ul>
+                    <li>At the top (steep): You give up A LOT of tomorrow's money to get a little more today</li>
+                    <li>At the bottom (gentle): You give up a little tomorrow's money to get more today</li>
+                    <li>This makes sense because the more you invest today, the less extra return you get tomorrow</li>
+                </ul>
+                
+                <p><strong>Capital Market Line Slope:</strong></p>
+                <ul>
+                    <li>This is a straight line with constant slope</li>
+                    <li>Slope = -(1 + interest rate)</li>
+                    <li>If interest rate is 10%, slope = -1.1</li>
+                    <li>This means you give up $1.10 tomorrow to get $1.00 today (or vice versa)</li>
+                </ul>
+            </div>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">🔢</span>The F, X, I, D Concept Explained</h4>
+                <p><strong>This is the fundamental equation of corporate finance:</strong></p>
+                <p style="text-align: center; font-size: 24px; font-weight: bold; color: #e74c3c;">F + X = I + D</p>
+                
+                <p><strong>What each letter means:</strong></p>
+                <ul>
+                    <li><strong>F (Financing):</strong> New money raised from outside sources
+                        <ul>
+                            <li>Borrowing money from banks</li>
+                            <li>Issuing new shares to investors</li>
+                            <li>Selling bonds</li>
+                        </ul>
+                    </li>
+                    <li><strong>X (Cash from Operations):</strong> Money your business generates
+                        <ul>
+                            <li>Profit from selling products</li>
+                            <li>Cash flow from day-to-day business</li>
+                            <li>This is your "internal financing"</li>
+                        </ul>
+                    </li>
+                    <li><strong>I (Investment):</strong> Money spent on growing the business
+                        <ul>
+                            <li>Buying new equipment</li>
+                            <li>Building new factories</li>
+                            <li>Research and development</li>
+                        </ul>
+                    </li>
+                    <li><strong>D (Dividends):</strong> Money given to shareholders
+                        <ul>
+                            <li>Cash payments to owners</li>
+                            <li>Share buybacks</li>
+                            <li>Other distributions</li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <p><strong>Why this equation is important:</strong></p>
+                <ul>
+                    <li>It shows that money in must equal money out</li>
+                    <li>If you want to invest more (I), you must either:
+                        <ul>
+                            <li>Raise more money (F), OR</li>
+                            <li>Make more profit (X), OR</li>
+                            <li>Pay fewer dividends (D)</li>
+                        </ul>
+                    </li>
+                    <li>This is why financial decisions are interconnected!</li>
+                </ul>
+                
+                <p><strong>Real Example:</strong></p>
+                <ul>
+                    <li>Your lemonade stand makes $100 profit (X)</li>
+                    <li>You want to buy a new juicer for $50 (I)</li>
+                    <li>You can pay $50 in dividends (D)</li>
+                    <li>Or you can borrow $20 (F) and pay $30 in dividends (D)</li>
+                    <li>Or you can pay no dividends and save $50 for future investments</li>
+                </ul>
+            </div>
+            
+            <div class="concept-box">
+                <h4><span class="emoji">🎯</span>How This All Connects to Fisher's Separation Theorem</h4>
+                <p><strong>The theorem says these decisions are separate:</strong></p>
+                <ul>
+                    <li><strong>Investment Decision (I):</strong> Choose the best projects that maximize company value</li>
+                    <li><strong>Financing Decision (F):</strong> Choose the best mix of debt and equity</li>
+                    <li><strong>Dividend Decision (D):</strong> Choose how much to pay shareholders</li>
+                </ul>
+                
+                <p><strong>But they're connected through the equation F + X = I + D:</strong></p>
+                <ul>
+                    <li>You can't change one without affecting another</li>
+                    <li>But you can make each decision based on different criteria</li>
+                    <li>Investment decisions based on project returns</li>
+                    <li>Financing decisions based on cost of capital</li>
+                    <li>Dividend decisions based on shareholder preferences</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="quiz-section">
+            <h3>🧠 Test Your Understanding</h3>
+            
+            <div class="quiz-question">
+                <p><span class="question-number">Q1</span><strong>Question:</strong> What is the production frontier like?</p>
+                
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, 'correct', 'q1')">
+                        a) Like a menu of all your business options
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q1')">
+                        b) Like a bank that lends you money
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q1')">
+                        c) Like a shopping mall
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q1')">
+                        d) Like a savings account
+                    </div>
+                </div>
+                
+                <div class="feedback correct" id="q1-correct">
+                    <strong>Correct!</strong> The production frontier is like a menu showing all the different ways you can run your business - spend money today, save for tomorrow, or any mix in between!
+                </div>
+                
+                <div class="feedback incorrect" id="q1-incorrect">
+                    <strong>Incorrect.</strong> Try again! Remember, the production frontier shows your business options, not banking services.
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p><span class="question-number">Q2</span><strong>Question:</strong> What is the capital market line like?</p>
+                
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q2')">
+                        a) Like your business plan
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'correct', 'q2')">
+                        b) Like a bank that lets you trade money between today and tomorrow
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q2')">
+                        c) Like your shopping list
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q2')">
+                        d) Like your piggy bank
+                    </div>
+                </div>
+                
+                <div class="feedback correct" id="q2-correct">
+                    <strong>Correct!</strong> The capital market line is like a bank service that lets you trade money between today and tomorrow - borrow now and pay back later, or save now and get more later!
+                </div>
+                
+                <div class="feedback incorrect" id="q2-incorrect">
+                    <strong>Incorrect.</strong> The capital market line is about banking services, not business plans or shopping lists.
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p><span class="question-number">Q3</span><strong>Question:</strong> What does "utility" mean?</p>
+                
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q3')">
+                        a) How much money you have
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q3')">
+                        b) How much you can invest
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'correct', 'q3')">
+                        c) How happy you are with your choice
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q3')">
+                        d) How much interest you earn
+                    </div>
+                </div>
+                
+                <div class="feedback correct" id="q3-correct">
+                    <strong>Correct!</strong> Utility means how happy you are with your choice! Some people are happy spending money now, others are happy saving for later.
+                </div>
+                
+                <div class="feedback incorrect" id="q3-incorrect">
+                    <strong>Incorrect.</strong> Utility is about happiness and satisfaction, not about money amounts or interest rates.
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p><span class="question-number">Q4</span><strong>Question:</strong> What should you focus on when running your business?</p>
+                
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, 'correct', 'q4')">
+                        a) Making your business most valuable
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q4')">
+                        b) Making sure you can spend money today
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q4')">
+                        c) Making sure you can save money for tomorrow
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q4')">
+                        d) Making everyone happy with your decisions
+                    </div>
+                </div>
+                
+                <div class="feedback correct" id="q4-correct">
+                    <strong>Correct!</strong> Focus on making your business most valuable! Then use the bank to adjust when you get your money.
+                </div>
+                
+                <div class="feedback incorrect" id="q4-incorrect">
+                    <strong>Incorrect.</strong> The key is to focus on business value first, then use banking services to adjust your personal money timing.
+                </div>
+            </div>
+            
+            <div class="quiz-question">
+                <p><span class="question-number">Q5</span><strong>Question:</strong> What is the main idea of Fisher's Separation Theorem?</p>
+                
+                <div class="quiz-options">
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q5')">
+                        a) You should always save money for tomorrow
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q5')">
+                        b) You should always spend money today
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'correct', 'q5')">
+                        c) Business decisions and personal spending decisions are separate
+                    </div>
+                    <div class="quiz-option" onclick="checkAnswer(this, 'incorrect', 'q5')">
+                        d) You should never invest in your business
+                    </div>
+                </div>
+                
+                <div class="feedback correct" id="q5-correct">
+                    <strong>Correct!</strong> The main idea is that business decisions (how to run your lemonade stand) and personal decisions (when you want money) are completely separate!
+                </div>
+                
+                <div class="feedback incorrect" id="q5-incorrect">
+                    <strong>Incorrect.</strong> The theorem is about separating business decisions from personal spending preferences, not about always saving or always spending.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('lectureCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let currentStep = 0;
+        
+        function drawDiagram(step) {
+            // Clear canvas
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            drawGrid();
+            
+            // Draw axes
+            drawAxes();
+            
+            // Draw production frontier
+            if (step >= 1) {
+                drawProductionFrontier();
+            }
+            
+            // Draw optimal point
+            if (step >= 2) {
+                drawOptimalPoint();
+            }
+            
+            // Draw capital market line
+            if (step >= 3) {
+                drawCapitalMarketLine();
+            }
+            
+            // Draw investor preferences
+            if (step >= 4) {
+                drawInvestorPreferences();
+            }
+            
+            // Draw final labels
+            if (step >= 5) {
+                drawFinalLabels();
+            }
+        }
+        
+        function drawGrid() {
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.lineWidth = 1;
+            
+            // Vertical lines - now from left to right side
+            for (let x = 100; x < 700; x += 50) {
+                ctx.beginPath();
+                ctx.moveTo(x, 50);
+                ctx.lineTo(x, 450);
+                ctx.stroke();
+            }
+            
+            // Horizontal lines
+            for (let y = 50; y < 450; y += 50) {
+                ctx.beginPath();
+                ctx.moveTo(100, y);
+                ctx.lineTo(700, y);
+                ctx.stroke();
+            }
+        }
+        
+        function drawAxes() {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 3;
+            ctx.font = '16px Arial';
+            ctx.fillStyle = '#333';
+            
+            // Y-axis (Period 2 - P2) - on the LEFT side
+            ctx.beginPath();
+            ctx.moveTo(100, 50);
+            ctx.lineTo(100, 450);
+            ctx.stroke();
+            
+            // X-axis (Period 1) - on the bottom
+            ctx.beginPath();
+            ctx.moveTo(100, 450);
+            ctx.lineTo(700, 450);
+            ctx.stroke();
+            
+            // Labels - positioned to avoid overlap
+            ctx.fillText('P2 (Period 2)', 20, 80);
+            ctx.fillText('P1 (Period 1)', 650, 480);
+            ctx.fillText('0', 95, 470);
+            ctx.fillText('E', 300, 470);
+            ctx.fillText('W1P1', 650, 470);
+        }
+        
+        function drawProductionFrontier() {
+            ctx.strokeStyle = '#e74c3c';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            
+            // Draw production frontier starting from Y-axis (standard orientation)
+            for (let x = 100; x <= 700; x++) {
+                const progress = (x - 100) / 600;
+                // Start high on Y-axis, curve down to right (standard concave shape)
+                const y = 450 - 350 * Math.pow(progress, 0.4);
+                if (x === 100) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.stroke();
+            
+            // Label - positioned to avoid overlap
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('🏭 Production Frontier', 300, 120);
+            
+            // Point E (initial endowment) - positioned to avoid overlap
+            const ex = 300;
+            const ey = 450 - 350 * Math.pow(0.33, 0.4);
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(ex, ey, 8, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('E', ex + 20, ey - 20);
+        }
+        
+        function drawOptimalPoint() {
+            // Optimal point P (where capital market line will be tangent)
+            const px = 400;
+            const py = 450 - 350 * Math.pow(0.5, 0.4);
+            
+            // Draw point P
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(px, py, 10, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Label point P - positioned to avoid overlap
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = 'bold 20px Arial';
+            ctx.fillText('P', px + 25, py - 25);
+            
+            // Label - positioned below to avoid overlap
+            ctx.font = '16px Arial';
+            ctx.fillText('🎯 Optimal Investment Point', px + 35, py + 40);
+        }
+        
+        function drawCapitalMarketLine() {
+            const px = 400;
+            const py = 450 - 350 * Math.pow(0.5, 0.4);
+            
+            // Calculate tangent line slope
+            const slope = -0.4 * 350 * Math.pow(0.5, -0.6) / 600;
+            const intercept = py - slope * px;
+            
+            // Draw capital market line
+            ctx.strokeStyle = '#3498db';
+            ctx.lineWidth = 3;
+            ctx.setLineDash([8, 4]);
+            
+            ctx.beginPath();
+            ctx.moveTo(100, intercept + slope * 100);
+            ctx.lineTo(700, intercept + slope * 700);
+            ctx.stroke();
+            
+            ctx.setLineDash([]);
+            
+            // Label - positioned to avoid overlap
+            ctx.fillStyle = '#3498db';
+            ctx.font = 'bold 18px Arial';
+            ctx.fillText('💰 Capital Market Line', 500, 180);
+        }
+        
+        function drawInvestorPreferences() {
+            // Draw investor preferences ALONG the production frontier curve
+            ctx.strokeStyle = '#27ae60';
+            ctx.lineWidth = 2;
+            
+            // Investor A (wants more Period 1) - on the production frontier
+            const ax = 500;
+            const ay = 450 - 350 * Math.pow(0.67, 0.4);
+            
+            // Investor B (wants more Period 2) - on the production frontier
+            const bx = 200;
+            const by = 450 - 350 * Math.pow(0.17, 0.4);
+            
+            // Investor C (happy at P) - on the production frontier
+            const cx = 400;
+            const cy = 450 - 350 * Math.pow(0.5, 0.4);
+            
+            // Draw indifference curves as small circles
+            ctx.beginPath();
+            ctx.arc(ax, ay, 25, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(bx, by, 25, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(cx, cy, 25, 0, 2 * Math.PI);
+            ctx.stroke();
+            
+            // Points
+            ctx.fillStyle = '#2c3e50';
+            ctx.beginPath();
+            ctx.arc(ax, ay, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.arc(bx, by, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.arc(cx, cy, 6, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Labels - positioned to avoid overlap
+            ctx.fillStyle = '#2c3e50';
+            ctx.font = '14px Arial';
+            ctx.fillText('A', ax + 20, ay - 20);
+            ctx.fillText('B', bx - 30, by + 25);
+            ctx.fillText('C', cx + 20, cy - 20);
+            
+            // Utility labels - positioned to avoid overlap
+            ctx.font = '12px Arial';
+            ctx.fillText('U\'a', ax + 35, ay - 35);
+            ctx.fillText('U\'b', bx - 45, by + 40);
+            ctx.fillText('Uc', cx + 35, cy - 35);
+        }
+        
+        function drawFinalLabels() {
+            ctx.fillStyle = '#e74c3c';
+            ctx.font = 'bold 24px Arial';
+            ctx.fillText('🎉 FISHER\'S SEPARATION THEOREM', 200, 40);
+            
+            ctx.font = '16px Arial';
+            ctx.fillText('Business Decision ≠ Personal Spending Decision', 250, 70);
+        }
+        
+        function showStep(step) {
+            currentStep = step;
+            
+            // Update button states
+            document.querySelectorAll('.step-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (parseInt(btn.dataset.step) <= step) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            // Show/hide explanations
+            document.querySelectorAll('.step-box').forEach(box => {
+                box.classList.remove('active');
+            });
+            
+            if (step >= 1) document.getElementById('step1').classList.add('active');
+            if (step >= 2) document.getElementById('step2').classList.add('active');
+            if (step >= 3) document.getElementById('step3').classList.add('active');
+            if (step >= 4) document.getElementById('step4').classList.add('active');
+            if (step >= 5) document.getElementById('step5').classList.add('active');
+            
+            // Redraw diagram
+            drawDiagram(step);
+        }
+        
+        function checkAnswer(option, correct, questionId) {
+            // Remove previous feedback for this question
+            document.getElementById(questionId + '-correct').style.display = 'none';
+            document.getElementById(questionId + '-incorrect').style.display = 'none';
+            
+            // Remove previous styling for this question
+            option.parentElement.querySelectorAll('.quiz-option').forEach(o => {
+                o.classList.remove('correct', 'incorrect');
+            });
+            
+            // Style the selected option
+            option.classList.add(correct);
+            
+            // Show feedback
+            if (correct === 'correct') {
+                document.getElementById(questionId + '-correct').style.display = 'block';
+            } else {
+                document.getElementById(questionId + '-incorrect').style.display = 'block';
+            }
+        }
+        
+        // Initialize diagram
+        drawDiagram(0);
+    </script>
+</body>
+</html>
